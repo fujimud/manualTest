@@ -1,0 +1,67 @@
+{"LANDING" : [	
+	{ "APPLICATION":"Google.com",
+	  "PAGENAME":"google",	
+     "LINK":"https://www.google.com",          
+     "ENVIRONMENT":"production"},
+
+	{ "APPLICATION":"BestBuy.com",
+	  "PAGENAME":"BestBuy",	
+     "LINK":"http://www.bestbuy.com/",          
+     "ENVIRONMENT":"production"},
+
+	{ "APPLICATION":"t-mobile.com",
+	  "PAGENAME":"T-Mobile.com",	
+     "LINK":"https://www.t-mobile.com/",          
+     "ENVIRONMENT":"production"},
+
+ 
+	{ "APPLICATION":"Yahoo.com",
+	  "PAGENAME":"Yahoo.com",	
+     "LINK":"https://www.yahoo.com/",          
+     "ENVIRONMENT":"production"},
+
+	{ "APPLICATION":"Amazon.com",
+	  "PAGENAME":"Amazon",	
+     "LINK":"https://www.amazon.com/",          
+     "ENVIRONMENT":"production"},
+     
+	{ "APPLICATION":"Staples.com",
+	  "PAGENAME":"Staples",	
+     "LINK":"http://www.staples.com/",          
+     "ENVIRONMENT":"production"},     
+               
+
+	{ "APPLICATION":"Expedia.com",
+		"PAGENAME":"Expedia",	
+     "LINK":"https://www.expedia.com/",          
+     "ENVIRONMENT":"stage"},
+	 
+	{ "APPLICATION":"Uverse.com",
+	  "PAGENAME":"Uverse",	
+     "LINK":"https://www.att.com/shop/tv/directv/tvdeals.html?JSAM_order=1-1&WT.srch=1&source=ECPS0000000PSM00P",          
+     "ENVIRONMENT":"production"}],
+     
+"ACCOUNTS" : [
+	{"USERNAME" : "ldfujimu",
+	"PASSWORD" : "TM0BILE!"},
+	
+	{"USERNAME" : "dfujimu",
+	"PASSWORD" : "xsMonkey2016"},
+	
+	{"USERNAME" : "llmoseso",
+	"PASSWORD" : "TM0BILE!"}],
+
+"TESTINGA" : [
+	{"ARG1" : "result1", 
+	"ARG2" : "result2",
+	"ARG3" : "result3",
+	"ARG04" : [{"arg5" : "result5"}] 
+	}],
+"TESTINGB" : "resultB",
+
+"PATHLOCATIONS" : [
+	{"BASEPATH" : "src/config/"},
+	{"LOGPATH" : "src/config/logs/"},
+	{"RECORDPATH" : "src/config/records"}	
+	]			
+}

@@ -1,0 +1,38 @@
+ArrayList: This is a new file
+ArrayList: adding a second line
+ArrayList: The cow jumped over the moon
+
+ArrayList: there's a space above here
+ArrayList: end of line
+ArrayList: This is a new file
+ArrayList: adding a second line
+ArrayList: The cow jumped over the moon
+
+ArrayList: there's a space above here
+ArrayList: end of line
+ArrayList: This is a new file
+ArrayList: adding a second line
+ArrayList: The cow jumped over the moon
+
+ArrayList: there's a space above here
+ArrayList: end of line
+ArrayList: This is a new file
+ArrayList: adding a second line
+ArrayList: The cow jumped over the moon
+
+ArrayList: there's a space above here
+ArrayList: end of line
+Cheese
+yogert
+pudding
+butter
+ArrayList: This is a new file
+ArrayList: adding a second line
+ArrayList: The cow jumped over the moon
+
+ArrayList: there's a space above here
+ArrayList: end of line
+Cheese
+yogurt
+pudding
+butter

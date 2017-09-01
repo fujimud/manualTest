@@ -1,0 +1,6 @@
+This is a new file
+adding a second line
+The cow jumped over the moon
+
+there's a space above here
+end of line
