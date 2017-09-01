@@ -33,10 +33,6 @@ public class mainCodes {
 	
 	logger log = new logger();
 	
-	public void HelloWorld () {
-		System.out.println("Hello World");
-		System.out.println("change");
-	}
 	
 	
 //// JSON /////////////////////////////////////////////////////////////	
