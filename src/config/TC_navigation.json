@@ -1,10 +1,9 @@
-{
-	"bestbuy.com": "BestBuy",
+{"bestbuy.com": "BestBuy",
 	"www.bestbuy.com": "BestBuy",
 	"bestbuy": "BestBuy",
 	"http://www.bestbuy.com": "BestBuy",
-	"facebook":"Facbook",
-	"fackbook.com":"Facbook",
-	"www.fackbook.com":"Facbook",
-	"http://www.fackbook.com":"Facbook"
+	"facebook":"Facebook",
+	"facebook.com":"Facebook",
+	"www.facebook.com":"Facebook",
+	"http://www.facebook.com":"Facebook"
 }

@@ -29,11 +29,27 @@ public class testFunctionalities {
 	mainCodes.logger logCat = mc.new logger();    // declaring an inner class 
 	mainCodes.jsonFile jsonLog = mc.new jsonFile();
 
+	@Test (enabled = false, priority = 2, description = "get data from json while when path is complete", groups = {"all", "navigation"}, expectedExceptions = {IOException.class})
+	public void throwExceptionErrorWhenJSONpathIsInvalid() throws IOException, ParseException  {		
+		System.out.println("INVALID >>>>> " + mc.getDataFromJsonFile("src/config/urlRecords.json", "landings>link", "facebook"));	
+	}
 	
 	
-	@Test(enabled = true, priority = 0, description = "get navigation point", groups = {"all", "navigation"})
-	public void navigationMap() {
-		
+	@Test (enabled = true, priority = 1, description = "get data using Invalid URL to json file", groups = {"all", "navigation"}, expectedExceptions = {IOException.class})
+	public void getDataWithInvalidFileURL() throws IOException, ParseException  {		
+		System.out.println("INVALID >>>>> " + mc.getDataFromJsonFile("src/config/dummpy.json", "landings;pagename>link", "facebook"));	
+	}
+	
+	
+	@Test (enabled = false, priority = 0, description = "get the link for Facebook found in a json file", groups = {"all", "navigation"})
+	public void getFileFromJson() throws FileNotFoundException, IOException, ParseException {
+		assertEquals(mc.getDataFromJsonFile("src/config/urlRecords.json", "landings;pagename>link", "facebook"), "http://www.facebook.com/");		
+	}
+	
+	
+	@Test(enabled = false, priority = 2, description = "open browser using Chrome", groups = {"all", "navigation"})
+	public void openChrome() throws FileNotFoundException, IOException, ParseException {	
+		mc.openWebPage("Chrome", "facebook");
 	}
 	
 	
@@ -104,7 +120,9 @@ public class testFunctionalities {
 	@Test(enabled = false, priority = 0, description = "find a match for Facebook from the json object", groups = {"all", "json"})
 	public void getJsonObject() throws FileNotFoundException, IOException, ParseException {
 		Object obj = new JSONParser().parse(new FileReader("src/config/TC_navigation.json"));
-		assertEquals(jsonLog.getJsonObject(obj, "facebook"), "Facebook");
+		String name = "facebook";
+		
+		assertEquals(jsonLog.getJsonObject(obj, name), "Facebook");
 	}
 	
 	@Test(enabled = false, priority = 1, description = "return blank when no match is found", groups = {"all", "json"})

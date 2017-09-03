@@ -5,8 +5,9 @@
 package mainSrc;
 
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +22,9 @@ import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.openqa.selenium.WebDriver;
 
 public class mainCodes {
 		
@@ -28,14 +32,49 @@ public class mainCodes {
 	public final String PATH2RECORDS = CONFIGPATH + "records/";
 	public final String PATHJSONRECORDS =  CONFIGPATH + "urlRecords.json";
 	public final String LOGLOCATION = CONFIGPATH + "logs/";
-//	public static WebDriver driver = null;
+	public static WebDriver driver = null;
 
 	
 	logger log = new logger();
 	
 	
 	
-//// JSON /////////////////////////////////////////////////////////////	
+	//// selenium //////////////////////////////////////////////////////////////////
+	
+	public void openWebPage(String browser, String webpageName) throws FileNotFoundException, IOException, ParseException {
+		jsonFile json = new jsonFile();
+		
+		Object webpage = new JSONParser().parse(new FileReader("src/config/TC_navigation.json"));
+		System.out.println("webpage completed >>>>> " + webpage);
+		System.out.println("FIND >>>> " + webpageName);
+		
+		Object pageName = json.getJsonObject(webpage, webpageName);
+		
+		System.out.println("pageName completed  >>>> " + pageName.toString());
+		
+		
+		String name = pageName.toString();
+		System.out.println("name completed");
+		
+			
+		//Object fileName = getDataFromFile(Paths.get(PATHJSONRECORDS));
+		Object fileName = new JSONParser().parse(new FileReader(PATHJSONRECORDS));
+		System.out.println("fileName completed");
+		
+		Object data  = json.getJsonObject(fileName, "landing");
+		System.out.println("data completed");
+		
+		data = json.getJsonArray(data, "application", name);
+		System.out.println("RESULT >>>  " + data.toString());
+		
+		//System.out.println(browser);
+		//driver = new ChromeDriver();		
+		//driver.navigate().to(webpageName);
+		///getClass(driver.navigate().to("https://www.google.com");
+	}
+	
+	
+
 	///////////////////////////////////////////////////////////////////////////////////	
 	public void navigationMap(String map) {
 		// Purpose: navigation flow
@@ -58,6 +97,45 @@ public class mainCodes {
 	}
 	
 	
+	
+
+	
+////JSON /////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////////
+	public String getDataFromJsonFile(String pathName, String navigationByKeys, String findMatch) throws FileNotFoundException, IOException, ParseException {
+		// Purpose: Retrieve data from a json file. It recognize and deals with both Json Objects and Json Arrays.
+		// 	If a value then the result is returned as a string
+		// 	Parameters: 
+		//		pathName is the path and json file location
+		//		navigationByKeys: a listing of keys that leads to where the value needed is located. semi-colon is the delimiter for the path needed. While > is used to identify the key that stores the value 
+		//			example: "landings;pagename>link"
+		
+		
+		jsonFile json = new jsonFile();
+		
+		Object ListingOfPossibleWebpageNames = new JSONParser().parse(new FileReader("src/config/nameVariations.json"));
+		Object jsonFile = new JSONParser().parse(new FileReader(pathName));
+
+		findMatch = (String) json.getJsonObject(ListingOfPossibleWebpageNames, findMatch);
+		
+		String[] keys = navigationByKeys.split(">");
+		String[] path = keys[0].split(";");
+		String attribute = keys[1];
+		
+		for(String pointer : path) {
+			if (jsonFile instanceof JSONObject) {
+				//System.out.println("This is an JSON object");
+				jsonFile = json.getJsonObject(jsonFile, pointer);
+				//System.out.println("OBJECT >>>  " + jsonFile);				
+			} else {
+				//System.out.println("This is a JSON Array");
+				jsonFile = json.getJsonArray(jsonFile, pointer, findMatch);
+				//System.out.println("ARRAY >>>>  " + jsonFile);
+			}
+		}
+		
+		return (String) json.getJsonObject(jsonFile, attribute);
+	}
 	
 	////////////////////////////////////////////////////////////////////////////////////
 	public class jsonFile {	
@@ -100,9 +178,6 @@ public class mainCodes {
 			}			
 			return result;
 		}
-		
-		
-		
 	}
 	
 	

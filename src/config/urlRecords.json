@@ -1,67 +1,71 @@
-{"LANDING" : [	
-	{ "APPLICATION":"Google.com",
-	  "PAGENAME":"google",	
-     "LINK":"https://www.google.com",          
-     "ENVIRONMENT":"production"},
+{"landings" : [	
+	{ "application":"Google.com",
+	  "pagename":"google",	
+     "link":"https://www.google.com",          
+     "environment":"production"},
 
-	{ "APPLICATION":"BestBuy.com",
-	  "PAGENAME":"BestBuy",	
-     "LINK":"http://www.bestbuy.com/",          
-     "ENVIRONMENT":"production"},
+	{ "application":"BestBuy.com",
+	  "pagename":"BestBuy",	
+     "link":"http://www.bestbuy.com/",          
+     "environment":"production"},
 
-	{ "APPLICATION":"t-mobile.com",
-	  "PAGENAME":"T-Mobile.com",	
-     "LINK":"https://www.t-mobile.com/",          
-     "ENVIRONMENT":"production"},
+	{ "application":"t-mobile.com",
+	  "pagename":"T-Mobile.com",	
+     "link":"https://www.t-mobile.com/",          
+     "environment":"production"},
 
+	{ "application":"FaceBook.com",
+	  "pagename":"Facebook",	
+     "link":"http://www.facebook.com/",          
+     "environment":"production"},
  
-	{ "APPLICATION":"Yahoo.com",
-	  "PAGENAME":"Yahoo.com",	
-     "LINK":"https://www.yahoo.com/",          
-     "ENVIRONMENT":"production"},
+	{ "application":"Yahoo.com",
+	  "pagename":"Yahoo.com",	
+     "link":"https://www.yahoo.com/",          
+     "environment":"production"},
 
-	{ "APPLICATION":"Amazon.com",
-	  "PAGENAME":"Amazon",	
-     "LINK":"https://www.amazon.com/",          
-     "ENVIRONMENT":"production"},
+	{ "application":"Amazon.com",
+	  "pagename":"Amazon",	
+     "link":"https://www.amazon.com/",          
+     "environment":"production"},
      
-	{ "APPLICATION":"Staples.com",
-	  "PAGENAME":"Staples",	
-     "LINK":"http://www.staples.com/",          
-     "ENVIRONMENT":"production"},     
+	{ "application":"Staples.com",
+	  "pagename":"Staples",	
+     "link":"http://www.staples.com/",          
+     "environment":"production"},     
                
 
-	{ "APPLICATION":"Expedia.com",
-		"PAGENAME":"Expedia",	
-     "LINK":"https://www.expedia.com/",          
-     "ENVIRONMENT":"stage"},
+	{ "application":"Expedia.com",
+		"pagename":"Expedia",	
+     "link":"https://www.expedia.com/",          
+     "environment":"stage"},
 	 
-	{ "APPLICATION":"Uverse.com",
-	  "PAGENAME":"Uverse",	
-     "LINK":"https://www.att.com/shop/tv/directv/tvdeals.html?JSAM_order=1-1&WT.srch=1&source=ECPS0000000PSM00P",          
-     "ENVIRONMENT":"production"}],
+	{ "application":"Uverse.com",
+	  "pagename":"Uverse",	
+     "link":"https://www.att.com/shop/tv/directv/tvdeals.html?JSAM_order=1-1&WT.srch=1&source=ECPS0000000PSM00P",          
+     "environment":"production"}],
      
-"ACCOUNTS" : [
-	{"USERNAME" : "ldfujimu",
-	"PASSWORD" : "TM0BILE!"},
+"accounts" : [
+	{"username" : "ldfujimu",
+	"password" : "TM0BILE!"},
 	
-	{"USERNAME" : "dfujimu",
-	"PASSWORD" : "xsMonkey2016"},
+	{"username" : "dfujimu",
+	"password" : "xsMonkey2016"},
 	
-	{"USERNAME" : "llmoseso",
-	"PASSWORD" : "TM0BILE!"}],
+	{"username" : "llmoseso",
+	"password" : "TM0BILE!"}],
 
-"TESTINGA" : [
-	{"ARG1" : "result1", 
-	"ARG2" : "result2",
-	"ARG3" : "result3",
-	"ARG04" : [{"arg5" : "result5"}] 
+"testinga" : [
+	{"arg1" : "result1", 
+	"arg2" : "result2",
+	"arg3" : "result3",
+	"arg04" : [{"arg5" : "result5"}] 
 	}],
-"TESTINGB" : "resultB",
+"testingb" : "resultB",
 
-"PATHLOCATIONS" : [
-	{"BASEPATH" : "src/config/"},
-	{"LOGPATH" : "src/config/logs/"},
-	{"RECORDPATH" : "src/config/records"}	
+"pathlocations" : [
+	{"basepath" : "src/config/"},
+	{"logpath" : "src/config/logs/"},
+	{"recordpath" : "src/config/records"}	
 	]			
 }
