@@ -1,0 +1,35 @@
+{"getDataFromJsonFile":[{"pathname":"src/config/urlRecords.json", "jsonPath":"landings>link","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook"},
+{"pathname": " src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook"},
+{"pathname":"src/config /urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook"},
+{"pathname":"src/config/ urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json ", "jsonPath":"landings;pagename>link","findMatch": "facebook"},
+{"pathname":"SRC/CONFIG/URLRECORDS.JSON", "jsonPath":"landings;pagename>link","findMatch": "facebook"},
+{"pathname":"config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook"},
+{"pathname":"urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook"},
+{"pathname":"", "jsonPath":"landings;pagename>link","findMatch": "facebook"},
+{"pathname":"//urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":" landings;pagename>link","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename >link","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename> link","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link ","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"pagename>link","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":">link","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>linkBad","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"INVALIDlandings;pagename>link","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"LANDINGS;PAGENAME>link","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>LINK","findMatch": "facebook"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "fb"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "FACEBOOK"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": ""},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "INVALID"},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook "},
+{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "  facebook"}
+
+]}
+
+
+
+

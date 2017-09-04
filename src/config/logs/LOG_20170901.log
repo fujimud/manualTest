@@ -1,0 +1,24 @@
+20170901223398z  getJsonArray WARNING No matching Value found for <Golf> in the object >>>> {"A1":"Alpha","A2":"Beta","A3":"Charlie"}
+20170901223303z  getJsonArray WARNING No matching Value found for <Golf> in the object >>>> {"A1":"Delta","A2":"Echo","A3":"Foxtrot"}
+20170901223303z  getJsonArray INFO: match found for <Golf> in the object >>>> {"A1":"Golf","A2":"India","A3":"Juliet"}
+20170901223303z  getJsonObject INFO: Object is empty
+20170901223303z  getJsonArray WARNING No matching Value found for <dummy> in the object >>>> {"A1":"Alpha","A2":"Beta","A3":"Charlie"}
+20170901223304z  getJsonArray WARNING No matching Value found for <dummy> in the object >>>> {"A1":"Delta","A2":"Echo","A3":"Foxtrot"}
+20170901223304z  getJsonArray WARNING No matching Value found for <dummy> in the object >>>> {"A1":"Golf","A2":"India","A3":"Juliet"}
+20170901223304z  getJsonArray WARNING No matching Value found for <dummy> in the object >>>> {"A1":"Hotel","A2":"Kilo","A3":"Charlie"}
+20170901223304z  getJsonArray WARNING No matching Key was found <Dummy> in the object >>>> {"A1":"Alpha","A2":"Beta","A3":"Charlie"}
+20170901223304z  getJsonArray WARNING No matching Key was found <Dummy> in the object >>>> {"A1":"Delta","A2":"Echo","A3":"Foxtrot"}
+20170901223304z  getJsonArray WARNING No matching Key was found <Dummy> in the object >>>> {"A1":"Golf","A2":"India","A3":"Juliet"}
+20170901223304z  getJsonArray WARNING No matching Key was found <Dummy> in the object >>>> {"A1":"Hotel","A2":"Kilo","A3":"Charlie"}
+20170901223428z  getJsonArray WARNING No matching Value found for <Golf> in the object >>>> {"A1":"Alpha","A2":"Beta","A3":"Charlie"}
+20170901223433z  getJsonArray WARNING No matching Value found for <Golf> in the object >>>> {"A1":"Delta","A2":"Echo","A3":"Foxtrot"}
+20170901223433z  getJsonArray INFO: match found for <Golf> in the object >>>> {"A1":"Golf","A2":"India","A3":"Juliet"}
+20170901223434z  getJsonObject INFO: Object is empty
+20170901223434z  getJsonArray WARNING No matching Value found for <dummy> in the object >>>> {"A1":"Alpha","A2":"Beta","A3":"Charlie"}
+20170901223434z  getJsonArray WARNING No matching Value found for <dummy> in the object >>>> {"A1":"Delta","A2":"Echo","A3":"Foxtrot"}
+20170901223436z  getJsonArray WARNING No matching Value found for <dummy> in the object >>>> {"A1":"Golf","A2":"India","A3":"Juliet"}
+20170901223436z  getJsonArray WARNING No matching Value found for <dummy> in the object >>>> {"A1":"Hotel","A2":"Kilo","A3":"Charlie"}
+20170901223436z  getJsonArray WARNING No matching Key was found <Dummy> in the object >>>> {"A1":"Alpha","A2":"Beta","A3":"Charlie"}
+20170901223436z  getJsonArray WARNING No matching Key was found <Dummy> in the object >>>> {"A1":"Delta","A2":"Echo","A3":"Foxtrot"}
+20170901223436z  getJsonArray WARNING No matching Key was found <Dummy> in the object >>>> {"A1":"Golf","A2":"India","A3":"Juliet"}
+20170901223436z  getJsonArray WARNING No matching Key was found <Dummy> in the object >>>> {"A1":"Hotel","A2":"Kilo","A3":"Charlie"}

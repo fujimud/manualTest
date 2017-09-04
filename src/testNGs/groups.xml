@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testing.org/testing-1.1.dtd">
+
+<suite name="testing suite">
+<test name= "all json">
+	<groups>
+		<run>
+			<include name="all">
+		</run>
+	</groups>
+	<classes>
+		<class name="testFunctionalities">
+		</class>
+	</classes>
+			
+		
+</test>
+</suite>

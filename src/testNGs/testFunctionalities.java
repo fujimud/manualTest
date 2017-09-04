@@ -24,6 +24,7 @@ import mainSrc.mainCodes;
 
 
 
+
 public class testFunctionalities {
 	mainCodes mc = new mainCodes();
 	mainCodes.logger logCat = mc.new logger();    // declaring an inner class 
@@ -31,11 +32,11 @@ public class testFunctionalities {
 
 	@Test (enabled = false, priority = 2, description = "get data from json while when path is complete", groups = {"all", "navigation"}, expectedExceptions = {IOException.class})
 	public void throwExceptionErrorWhenJSONpathIsInvalid() throws IOException, ParseException  {		
-		System.out.println("INVALID >>>>> " + mc.getDataFromJsonFile("src/config/urlRecords.json", "landings>link", "facebook"));	
+		System.out.println("INVALID >>>>> " + mc.getDataFromJsonFile("src/config/urlRecords.json", "landings>link", "facebook2"));	
 	}
 	
 	
-	@Test (enabled = true, priority = 1, description = "get data using Invalid URL to json file", groups = {"all", "navigation"}, expectedExceptions = {IOException.class})
+	@Test (enabled = false, priority = 1, description = "get data using Invalid URL to json file", groups = {"all", "navigation"}, expectedExceptions = {IOException.class})
 	public void getDataWithInvalidFileURL() throws IOException, ParseException  {		
 		System.out.println("INVALID >>>>> " + mc.getDataFromJsonFile("src/config/dummpy.json", "landings;pagename>link", "facebook"));	
 	}
