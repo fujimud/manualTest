@@ -16,7 +16,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import mainSrc.mainCodes;
@@ -45,10 +44,10 @@ public class testFunctionalities {
 		this.code = jo.get("code").toString();
 	}
 
-	@Test(enabled = true, priority= 1, groups ="MultipleJson")
+	@Test(enabled = false, priority= 1, groups ="MultipleJson")
 	public void runMultipleJsonTests() throws FileNotFoundException, IOException, ParseException {
 		System.out.println("Desc >> " + description);
-			mc.getDataFromJsonFile(pathname, jsonPath, findMatch);
+		mc.getDataFromJsonFile(pathname, jsonPath, findMatch);		
 		
 	}
 	
