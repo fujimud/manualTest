@@ -16,12 +16,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import mainSrc.mainCodes;
-
-
-
 
 
 
@@ -29,8 +27,60 @@ public class testFunctionalities {
 	mainCodes mc = new mainCodes();
 	mainCodes.logger logCat = mc.new logger();    // declaring an inner class 
 	mainCodes.jsonFile jsonLog = mc.new jsonFile();
+	
+	String findMatch = null;
+	String jsonPath = null;
+	String pathname = null;
+	String description = null;
+	String code = null;
+	
+	
+	public testFunctionalities(Object obj) {
+		
+		JSONObject jo = (JSONObject) obj;
+		this.findMatch = jo.get("findMatch").toString();  
+		this.jsonPath = jo.get("jsonPath").toString();
+		this.pathname= jo.get("pathname").toString();
+		this.description = jo.get("description").toString();
+		this.code = jo.get("code").toString();
+	}
 
-	@Test (enabled = false, priority = 2, description = "get data from json while when path is complete", groups = {"all", "navigation"}, expectedExceptions = {IOException.class})
+	@Test(enabled = true, priority= 1, groups ="MultipleJson")
+	public void runMultipleJsonTests() throws FileNotFoundException, IOException, ParseException {
+		System.out.println("Desc >> " + description);
+			mc.getDataFromJsonFile(pathname, jsonPath, findMatch);
+		
+	}
+	
+	
+	@Test (enabled = false, priority=3, description="test an array of data and retrieve exception errors", groups = {"all", "navigation"})
+	public void runArrayOfDataAndExpectExceptionErrors() throws FileNotFoundException, IOException, ParseException   {
+//  expectedExceptions = {ClassCastException.class, ParseException.class, IOException.class}		
+		Object obj = new JSONParser().parse(new FileReader("src/config/dataTesting/testData.json"));
+		System.out.println("obj > " + obj);
+		JSONObject tempJO = (JSONObject) obj;		
+		Object getJson = tempJO.get("getDataFromJsonFile");
+		//System.out.println(">> " + getJson);
+		JSONArray ja = (JSONArray) getJson;
+		
+		for(Object line : ja) {
+			System.out.println(">> " + line.toString());
+			JSONObject jo = (JSONObject) line;
+			System.out.println(">> " + jo.get("findMatch"));
+			System.out.println(">> " + jo.get("jsonPath"));
+			System.out.println(">> " + jo.get("pathname"));
+			
+		}
+		
+		
+			
+		
+		
+		
+	}
+	
+	
+	@Test (enabled = true, priority = 2, description = "get data from json while when path is complete", groups = {"all", "navigation"}, expectedExceptions = {ClassCastException.class, ParseException.class, IOException.class})
 	public void throwExceptionErrorWhenJSONpathIsInvalid() throws IOException, ParseException  {		
 		System.out.println("INVALID >>>>> " + mc.getDataFromJsonFile("src/config/urlRecords.json", "landings>link", "facebook2"));	
 	}
@@ -227,3 +277,5 @@ public class testFunctionalities {
 	}
 
 }
+
+
