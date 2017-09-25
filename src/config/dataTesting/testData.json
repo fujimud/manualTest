@@ -1,4 +1,4 @@
-{"getDataFromJsonFile":[{"pathname":"src/config/urlRecords.json", "jsonPath":"landings>link","findMatch": "facebook", "description":"jsonPath is missing pagename and expected to throw an exception error", "code":"red"},
+{"getDataFromJsonFile":[{"pathname":"src/config/urlRecords.json", "jsonPath":"landings>link","findMatch": "facebook", "description":"jsonPath is missing 'pagename' and expected to throw an exception error", "code":"red"},
 {"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook","description":"good version", "code":"green"},
 {"pathname": " src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"space appears before the pathname", "code": "red"},
 {"pathname":"src/config /urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"space is present after 'config'", "code":"red"},

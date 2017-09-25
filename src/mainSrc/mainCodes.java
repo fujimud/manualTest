@@ -155,8 +155,8 @@ public class mainCodes {
 		/////////////////////////////////////////////////////////////////////////
 		public Object getJsonArray(Object jArray, String findKey, String matchValue) {
 			// Purpose: return the jsonarray when it finds its first matching value
-			Object result = null;
-		
+			//String objArray = null;
+			String message = null;
 			for(Object obj : (JSONArray) jArray)  {
 		
 				JSONObject jObject = (JSONObject) obj;
@@ -164,19 +164,21 @@ public class mainCodes {
 				if (value != null) {
 					if (value.toString().equals(matchValue)) {
 						log.info("getJsonArray", "match found for <" + matchValue + "> in the object >>>> " + obj.toString());
-						result = obj;
-						break;
+						return obj;
 					} else {
-						log.warning("getJsonArray", "No matching Value found for <" + matchValue + "> in the object >>>> " + obj.toString());
-						result = "";
+						//log.warning("getJsonArray", "No matching Value found for <" + matchValue + "> in the object >>>> " + obj.toString();
+						message = "No matching value found for <" + matchValue + "> in the object >>>> " + obj.toString();
 					}	
 				} else {
-					log.warning("getJsonArray", "No matching Key was found <" + findKey + "> in the object >>>> " + obj.toString());
-					result = "";
+					message = "The key " + findKey + " could not be found";					
+					log.warning("getJsonArray", "key is missing");
+					break;
 				}
 				
 			}			
-			return result;
+			
+			log.warning("getJsonArray", message);
+			return "";		
 		}
 	}
 	

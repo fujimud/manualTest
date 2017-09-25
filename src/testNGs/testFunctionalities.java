@@ -33,8 +33,8 @@ public class testFunctionalities {
 	String description = null;
 	String code = null;
 	
-	
-	public testFunctionalities(Object obj) {
+/*	
+public testFunctionalities(Object obj) {
 		
 		JSONObject jo = (JSONObject) obj;
 		this.findMatch = jo.get("findMatch").toString();  
@@ -43,7 +43,8 @@ public class testFunctionalities {
 		this.description = jo.get("description").toString();
 		this.code = jo.get("code").toString();
 	}
-
+*/
+	
 	@Test(enabled = false, priority= 1, groups ="MultipleJson")
 	public void runMultipleJsonTests() throws FileNotFoundException, IOException, ParseException {
 		System.out.println("Desc >> " + description);
@@ -70,12 +71,6 @@ public class testFunctionalities {
 			System.out.println(">> " + jo.get("pathname"));
 			
 		}
-		
-		
-			
-		
-		
-		
 	}
 	
 	

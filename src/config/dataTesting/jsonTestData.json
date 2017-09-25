@@ -1,0 +1,4 @@
+{"getGoodData":[
+	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"testing happy path that a match for 'facebook' will be returned", "code":"red", "expectedResult":"http://www.facebook.com/"}],
+"getBadData":[
+	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link", "findMatch":"facebook", "description":"testing for exception error", "code":"#####", "expectedResult":"#####"}]}
