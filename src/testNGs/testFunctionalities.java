@@ -15,6 +15,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
@@ -27,28 +29,28 @@ public class testFunctionalities {
 	mainCodes.logger logCat = mc.new logger();    // declaring an inner class 
 	mainCodes.jsonFile jsonLog = mc.new jsonFile();
 	
+	
 	String findMatch = null;
 	String jsonPath = null;
 	String pathname = null;
 	String description = null;
 	String code = null;
+
+	//public static WebDriver driver = null;
+	String username = System.getProperty("user.name");
 	
-/*	
-public testFunctionalities(Object obj) {
-		
-		JSONObject jo = (JSONObject) obj;
-		this.findMatch = jo.get("findMatch").toString();  
-		this.jsonPath = jo.get("jsonPath").toString();
-		this.pathname= jo.get("pathname").toString();
-		this.description = jo.get("description").toString();
-		this.code = jo.get("code").toString();
+	@Test (enabled = true, priority = 1, description="initite Chrome driver", groups="all, driver")
+	public void openChromeDriver() {		
+		System.setProperty("webdriver.chrome.driver", "/Users/Dan/eclipse/jee-oxygen/eclipse/dropins/chromedriver_win32/chromedriver.exe");		
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://www.google.com/");		
 	}
-*/
+	
 	
 	@Test(enabled = false, priority= 1, groups ="MultipleJson")
 	public void runMultipleJsonTests() throws FileNotFoundException, IOException, ParseException {
 		System.out.println("Desc >> " + description);
-		mc.getDataFromJsonFile(pathname, jsonPath, findMatch);		
+		jsonLog.getDataFromJsonFile(pathname, jsonPath, findMatch);		
 		
 	}
 	
@@ -74,21 +76,21 @@ public testFunctionalities(Object obj) {
 	}
 	
 	
-	@Test (enabled = true, priority = 2, description = "get data from json while when path is complete", groups = {"all", "navigation"}, expectedExceptions = {ClassCastException.class, ParseException.class, IOException.class})
+	@Test (enabled = false, priority = 2, description = "get data from json while when path is complete", groups = {"all", "navigation"}, expectedExceptions = {ClassCastException.class, ParseException.class, IOException.class})
 	public void throwExceptionErrorWhenJSONpathIsInvalid() throws IOException, ParseException  {		
-		System.out.println("INVALID >>>>> " + mc.getDataFromJsonFile("src/config/urlRecords.json", "landings>link", "facebook2"));	
+		System.out.println("INVALID >>>>> " + jsonLog.getDataFromJsonFile("src/config/urlRecords.json", "landings>link", "facebook2"));	
 	}
 	
 	
 	@Test (enabled = false, priority = 1, description = "get data using Invalid URL to json file", groups = {"all", "navigation"}, expectedExceptions = {IOException.class})
 	public void getDataWithInvalidFileURL() throws IOException, ParseException  {		
-		System.out.println("INVALID >>>>> " + mc.getDataFromJsonFile("src/config/dummpy.json", "landings;pagename>link", "facebook"));	
+		System.out.println("INVALID >>>>> " + jsonLog.getDataFromJsonFile("src/config/dummpy.json", "landings;pagename>link", "facebook"));	
 	}
 	
 	
 	@Test (enabled = false, priority = 0, description = "get the link for Facebook found in a json file", groups = {"all", "navigation"})
 	public void getFileFromJson() throws FileNotFoundException, IOException, ParseException {
-		assertEquals(mc.getDataFromJsonFile("src/config/urlRecords.json", "landings;pagename>link", "facebook"), "http://www.facebook.com/");		
+		assertEquals(jsonLog.getDataFromJsonFile("src/config/urlRecords.json", "landings;pagename>link", "facebook"), "http://www.facebook.com/");		
 	}
 	
 	

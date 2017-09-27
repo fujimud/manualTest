@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test name="Test1">
+	<groups>
+		<run>
+			<include name="navigation"/>
+		<run>
+	</groups>
+	<classes>
+		<class name="testNgs/test1"/>
+	classes>
+</test>
