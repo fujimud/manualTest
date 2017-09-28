@@ -41,17 +41,17 @@ public class testFunctionalities {
 	
 	@Test (enabled = true, priority = 1, description="initite Chrome driver", groups="all, driver")
 	public void openChromeDriver() {		
-		//System.setProperty("webdriver.chrome.driver", "/Users/Dan/eclipse/jee-oxygen/eclipse/dropins/chromedriver_win32/chromedriver.exe");		
-		//WebDriver driver = new ChromeDriver();
-		//driver.get("https://www.google.com/");	
-		
+
 		
 		System.out.println("Chrome");
-		System.setProperty("webdriver.chrome.driver", "/Users/Dan/eclipse/jee-oxygen/eclipse/dropins/chromedriver_win32/chromedriver.exe");
-		//System.setProperty("webdriver.chrome.driver", "/Users/Dan/chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "C:\\webdriver\\chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
+		driver.get("https://www.yahoo.com/");
+	
+		//System.setProperty("webdriver.chrome.driver", "/webdriver/chromedriver.exe");
+		//WebDriver driver = new ChromeDriver();
 		
-		driver.get("https://www.google.com/");
+		//driver.get("https://www.google.com/");
 	}
 	
 	
