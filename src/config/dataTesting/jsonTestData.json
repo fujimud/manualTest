@@ -1,21 +1,24 @@
 {"getGoodData":[
 	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"testing happy path that a match for 'facebook' will be returned", "code":"red", "expectedResult":"http://www.facebook.com/"},
-	{"pathname":"SRC/CONFIG/urlRecords.JSON", "jsonPath":"LANDINGS;PAGENAME>LINK","findMatch": "facebook", "description":"testing when all required data are upper case then it should return 420", "code":"red", "expectedResult":"420"},
-	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings>link", "findMatch":"facebook", "description":"testing to see that error code 420 is returned when the json path is broken and retrieves a json array", "code":"#####", "expectedResult":"420"},
-	{"pathname":"src/config/urlRecords.json", "jsonPath":"", "findMatch":"facebook", "description":"testing to see that error code 420 is returned when no keys are provided", "code":"#####", "expectedResult":"420"},	
-	{"pathname":"    ", "jsonPath":"   ", "findMatch":"    ", "description":"testing to see that error code 420 is returned when parameters contain spaces", "code":"#####", "expectedResult":"420"},
-	{"pathname":"", "jsonPath":"", "findMatch":"", "description":"testing to see that error code 420 is returned when none of the required data are provided", "code":"#####", "expectedResult":"420"},
-	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "", "description":"testing to see that error code 420 is returned when 'findMatch' has no data", "code":"red", "expectedResult":"420"},
-	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link", "findMatch":"  ", "description":"testing to see that error code 420 is returned when 'findMatch' has spaces", "code":"#####", "expectedResult":"420"},
-	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename","findMatch": "facebook", "description":"testing to see that error code 420 is returned when the key 'link' is missing", "code":"red", "expectedResult":"420"},
-	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings>pagename>link","findMatch": "facebook", "description":"testing to see that error code 420 is returned when the delimiter '>' appears more then once", "code":"red", "expectedResult":"420"}
+	{"pathname":"SRC/CONFIG/urlRecords.JSON", "jsonPath":"LANDINGS;PAGENAME>LINK","findMatch": "facebook", "description":"testing when all required data are upper case the JsonException error will be triggered", "code":"red", "expectedResult":"JsonException> getJsonArray: The key 'PAGENAME' could not be found"},
+	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings>link", "findMatch":"facebook", "description":"testing to see that an Exception error is returned when the json path is broken and retrieves a json array", "code":"#####", "expectedResult":"getDataFromJsonFile: This is a json array and it failed to get the value for 'link'"},
+	{"pathname":"src/config/urlRecords.json", "jsonPath":"", "findMatch":"facebook", "description":"testing to see that an Exception error is returned when no keys are provided", "code":"#####", "expectedResult":"Exception"},	
+	{"pathname":"    ", "jsonPath":"   ", "findMatch":"    ", "description":"testing to see that an Exception error is returned when parameters contain spaces", "code":"#####", "expectedResult":"Exception"},
+	{"pathname":"", "jsonPath":"", "findMatch":"", "description":"testing to see that an Exception error is returned when none of the required data are provided", "code":"#####", "expectedResult":"Exception"},
+	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "", "description":"testing to see that an Exception error is returned when 'findMatch' has no data", "code":"red", "expectedResult":"Exception"},
+	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link", "findMatch":"  ", "description":"testing to see that an Exception error is returned when 'findMatch' has spaces", "code":"#####", "expectedResult":"420"},
+	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename","findMatch": "facebook", "description":"testing to see that an Exception error is returned when the key 'link' is missing", "code":"red", "expectedResult":"420"},
+	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings>pagename>link","findMatch": "facebook", "description":"testing to see that an Exception error is returned when the delimiter '>' appears more then once", "code":"red", "expectedResult":"420"}
 	],
 		
 	
 "getBadData":[
-	{"pathname":"src/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"testing to see that exception error FileNotFoundException was thrown when the path name is incomplete", "code":"red", "expectedResult":"Exception Error"},
-	{"pathname":"src/config/urlRecords.pdp", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"testing to see that exception error FileNotFoundException was thrown when calling the wrong file type", "code":"red", "expectedResult":"Exception Error"},
-	{"pathname":"urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"testing to see that exception error FileNotFoundException was thrown when the pathname was left out", "code":"red", "expectedResult":"Exception Error"},
-	{"pathname":"src/config/", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"testing to see that exception error FileNotFoundException was thrown when the file name is left out", "code":"red", "expectedResult":"Exception Error"},
-	{"pathname":"", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"testing to see that exception error FileNotFoundException was thrown when 'pathname' has no data", "code":"red", "expectedResult":"Exception Error"}
+	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"testing happy path that a match for 'facebook' will be returned", "code":"red", "expectedResult":"http://www.facebook.com/"},
+	{"pathname":"src/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"Exception is thrown when the path name is incomplete", "code":"red", "expectedResult":"Exception Error"},
+	{"pathname":"src/config/urlRecords.pdp", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"Exception is thrown when calling the wrong file type", "code":"red", "expectedResult":"Exception Error"},
+	{"pathname":"urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"Exception is thrown when the pathname was left out", "code":"red", "expectedResult":"Exception Error"},
+	{"pathname":"src/config/", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"Exception is thrown when the file name is left out", "code":"red", "expectedResult":"Exception Error"},
+	{"pathname":"", "jsonPath":"landings;pagename>link","findMatch": "facebook", "description":"Exception is thrown when 'pathname' has no data", "code":"red", "expectedResult":"Exception Error"},
+	{"pathname":"src/config/urlRecords.json", "jsonPath":"","findMatch": "facebook", "description":"Exception is thrown because 'jsonPath' is balnk", "code":"red", "expectedResult":"Exception Error"},
+	{"pathname":"src/config/urlRecords.json", "jsonPath":"landings;pagename>link","findMatch": "", "description":"Exception is thrown because 'findMatch' is balnk", "code":"red", "expectedResult":"Exception Error"}
 	]}

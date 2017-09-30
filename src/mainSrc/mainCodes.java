@@ -5,6 +5,8 @@
 package mainSrc;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,14 +20,32 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class mainCodes {
 		
@@ -42,10 +62,25 @@ public class mainCodes {
 	
 	
 	//// webdriver /////////////////////////////////////////////////////////////////
-	public void connect2webdriver() {
-		System.setProperty("webdriver.chrome.driver", "/Users/" + username + "/eclipse/jee-oxygen/eclipse/dropins/chromedriver.exe");		
-		WebDriver driver = new ChromeDriver();
-		driver.get("https://www.google.com/");
+	public void connect2webdriver(String browsertype) {
+		
+		switch(browsertype.toLowerCase().trim()) {
+			case "chrome": 
+				System.setProperty("webdriver.chrome.driver", "\\webdriver\\chromedriver.exe");
+				driver = new ChromeDriver();
+				break;
+			case "internetexplorer":
+			case "ie":
+				driver = new InternetExplorerDriver();
+				System.setProperty("webdriver.ie.driver", "\\webdriver\\IEDriverServer.exe");
+				break;
+			case "firefox":
+			case "ff":
+				FirefoxDriver driver = new FirefoxDriver();
+				break;
+			default:
+				log.warning("connect2webdriver", "Browser '" + browsertype + "' is currently not supported" );
+		}
 	}
 	
 	
@@ -110,8 +145,39 @@ public class mainCodes {
 	////////////////////////////////////////////////////////////////////////////////////
 	public class jsonFile {	
 		
+		
 		////////////////////////////////////////////////////////////////////////////////////
-		public String getDataFromJsonFile(String pathName, String navigationByKeys, String findMatch) throws FileNotFoundException, IOException, ParseException {
+		public String returnDataFromJsonFile(String fileLocation, String JsonPath, String findMatch )  throws  IOException, ParseException, JsonException {
+		// Purpose: Retrieve data from a json file. It recognize and deals with both Json Objects and Json Arrays.
+		// 	If a value then the result is returned as a string
+		// 	Parameters: 
+		//		fileLocation is the path and json file location
+		//		JsonPath: a listing of keys that leads to where the value needed is located. semi-colon is the delimiter for the path needed. While > is used to identify the key that stores the value 
+		//			example: "landings;pagename>link"
+		//		findMatch: Key name used to return it's value	
+			
+			
+			if (JsonPath.trim().isEmpty() || findMatch.trim().isEmpty() || (fileLocation.trim().isEmpty())) { 
+				throw new JsonException("getDataFromJsonFile: There are data missing from the Json file"); 
+			}
+			
+			String result = null;			
+			jsonFile json = new jsonFile();
+			Object ListingOfPossibleWebpageNames = null;
+			Object jsonFile = null;			
+			
+			ListingOfPossibleWebpageNames = new JSONParser().parse(new FileReader("src/config/nameVariations.json"));
+			jsonFile = new JSONParser().parse(new FileReader(fileLocation));
+			
+			
+			
+			
+			return "Testing";
+		}
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		public String getDataFromJsonFile(String pathName, String navigationByKeys, String findMatch) throws  IOException, ParseException, JsonException {
 			// Purpose: Retrieve data from a json file. It recognize and deals with both Json Objects and Json Arrays.
 			// 	If a value then the result is returned as a string
 			// 	Parameters: 
@@ -120,27 +186,26 @@ public class mainCodes {
 			//			example: "landings;pagename>link"
 			
 			// Verifies that all required data are provided with some data
-			if (navigationByKeys.trim().isEmpty() || findMatch.trim().isEmpty()) {
-				log.error("getDataFromJsonFile", "Json file is missing some information, unable to complete this task");
-				return "420";
+			if (navigationByKeys.trim().isEmpty() || findMatch.trim().isEmpty()) { 
+				throw new JsonException("getDataFromJsonFile: There are data missing from the Json file"); 
 			}
 			
-			String result = null;
-			
+			String result = null;			
 			jsonFile json = new jsonFile();
+			
 			
 			Object ListingOfPossibleWebpageNames = new JSONParser().parse(new FileReader("src/config/nameVariations.json"));
 			Object jsonFile = new JSONParser().parse(new FileReader(pathName));
 
+			// Return a standardized name for one of the recognized companies
 			findMatch = (String) json.getJsonObject(ListingOfPossibleWebpageNames, findMatch);
-			
+	
 			String[] keys = navigationByKeys.split(">");
 			String[] path = keys[0].split(";");
 			
 			// Verify the key used to get the value is identified after the '>'"
 			if (keys.length <= 1) {
-				log.error("getDataFromJsonFile", "Key used to identify which value to retrieve is missing");
-				return "420";
+				throw new JsonException("getDataFromJsonFile: Key used to identify which value to retrieve is missing. The key is usually preceeded by '>' ");
 			}
 			String key = keys[1];
 			
@@ -149,51 +214,59 @@ public class mainCodes {
 			for(String pointer : path) {
 				if (jsonFile instanceof JSONObject) {
 					//System.out.println("This is an JSON object");
-					jsonFile = json.getJsonObject(jsonFile, pointer);
-					//System.out.println("OBJECT >>>  " + jsonFile);				
+					jsonFile = json.getJsonObject(jsonFile, pointer);				
 				} else {
 					//System.out.println("This is a JSON Array");
 					jsonFile = json.getJsonArray(jsonFile, pointer, findMatch);
-					//System.out.println("ARRAY >>>>  " + jsonFile);
 				}
 			}
 			
 			// Verify that the return value is not a JSON array
 			if ((jsonFile instanceof JSONArray)) {
-				log.error("getDataFromJsonFile", "This is a json array and it failed to get the value for '" + key + "'");
-				//return "420";
-				result = "420";
-			} else if(String.valueOf(jsonFile).equals("420")) {
-				log.error("getDataFromJsonFile", "Error 420");
-				//return "420";
-				result = "420";
+				throw new JsonException("getDataFromJsonFile: This is a json array and it failed to get the value for '" + key + "'");				
 			} else {
 				result = (String) json.getJsonObject(jsonFile, key);
 			}
-			
-			//return (String) json.getJsonObject(jsonFile, key);
+
 			return result;
 		}
 		
+		///////////////////////////////////////////////////////////////////////
+		// my exception class
+		@SuppressWarnings("serial")
+		public class JsonException extends Exception {
+			String msg;
+			
+			JsonException (String errorMsg) {
+				msg = errorMsg;
+			}
+			
+			public String toString() {
+				return("JsonException> " + msg);
+			}
+			
+		}
+		
+		
+
 		////////////////////////////////////////////////////////////////////////
-		public Object getJsonObject(Object obj, String key) {
+		public Object getJsonObject(Object obj, String key) throws JsonException {
 			//System.out.println("JSONObject retrieve the value based from the provided key");
 			
 			
-			//System.out.println("Object >>  " + obj.getClass());
 			JSONObject tempJO = (JSONObject) obj;
-			if ((tempJO.containsKey(key.toLowerCase()) || (!tempJO.isEmpty()))) {
-				obj = (Object) tempJO.get(key.toLowerCase());
+			obj = (Object) tempJO.get(key.toLowerCase());
+			if (obj != null) {				
+				log.info("getJsonObject", "When searching for key '" + key + "', a match was found");
+				return obj;
 			} else {
-				log.info("getJsonObject", key + " could not find a match");
-				return (Integer) 420;
+				String message = "getJsonObject: When searching for key '" + key + "', a match could not be found" ;
+				throw new JsonException(message);
 			}
-
-			return obj;
 		}
-		
+
 		/////////////////////////////////////////////////////////////////////////
-		public Object getJsonArray(Object jArray, String findKey, String matchValue) {
+		public Object getJsonArray(Object jArray, String findKey, String matchValue) throws JsonException {
 			// Purpose: return the jsonarray when it finds its first matching value
 			//String objArray = null;
 			String message = null;
@@ -203,21 +276,17 @@ public class mainCodes {
 				Object value = jObject.get(findKey);
 				if (value != null) {
 					if (value.toString().equals(matchValue)) {
-						log.info("getJsonArray", "match found for <" + matchValue + "> in the object >>>> " + obj.toString());
+						log.info("getJsonArray", "match found for <" + matchValue + "> in the object >>>> " + obj.toString());						
 						return obj;
 					} else {
-						//log.warning("getJsonArray", "No matching Value found for <" + matchValue + "> in the object >>>> " + obj.toString();
-						message = "No matching value found for <" + matchValue + "> in the object >>>> " + obj.toString();
+						message = "getJsonArray: No matching value found for <" + matchValue + "> in the object >>>> " + obj.toString();
+						
 					}	
 				} else {
-					message = "The key " + findKey + " could not be found";					
-					//log.warning("getJsonArray", "key is missing");
+					message = "getJsonArray: The key '" + findKey + "' could not be found";	
 				}
-				
-			}			
-			
-			log.warning("getJsonArray", message);
-			return (Integer) 420;		
+			}
+			throw new JsonException(message);
 		}
 	}
 	
@@ -296,10 +365,10 @@ public class mainCodes {
 			Path filePath = Paths.get(LOGLOCATION + "LOG_" + datestamp + ".log");
 			
 			if(!filePath.toFile().exists()) {
-				System.out.println("logger >>>> creating file for >>>> " + filePath.toString());
+				//System.out.println("logger >>>> creating file for >>>> " + filePath.toString());
 				filePath.getParent().toFile().mkdirs();
 			} 
-			if(!ioFile.putSingleLineIntoFile(filePath, timestamp + " " + messageEntry)) System.err.println("logger >>> Could not enter text file");
+			if(!putSingleLineIntoFile(filePath, timestamp + " " + messageEntry)) System.err.println("logger >>> Could not enter text file");
 			
 		}
 	}
@@ -309,7 +378,38 @@ public class mainCodes {
 	public class IOfile {
 		
 		//// MS Excel //////////////////////////////////////////////
-		
+		@SuppressWarnings("deprecation")
+		public void readSpreadSheet(String fileLocation, String sheetName) throws IOException {
+			
+			FileInputStream inputStream = new FileInputStream(new File(fileLocation));
+			XSSFWorkbook wb = new XSSFWorkbook(inputStream);
+			XSSFSheet sheet = wb.getSheetAt(0);
+			
+			Iterator<Row> rows = sheet.iterator();
+			
+			while(rows.hasNext()) {
+				Row row = rows.next();
+				
+				Iterator<Cell> cells = row.cellIterator();
+				while(cells.hasNext()) {
+					Cell cell = cells.next();
+						switch(cell.getCellType()) {
+						case Cell.CELL_TYPE_STRING:
+							System.out.println(cell.getStringCellValue() + "\t");
+							break;
+						case Cell.CELL_TYPE_NUMERIC:
+							System.out.println(cell.getNumericCellValue() + "\t");
+							break;
+						case Cell.CELL_TYPE_BOOLEAN:
+							System.out.println(cell.getBooleanCellValue() + "\t");
+							break;
+						default:
+						}
+					}
+				}
+				System.out.println("");
+			}
+
 		
 		
 		//// text file //////////////////////////////////////////////

@@ -7,6 +7,8 @@ import static org.testng.Assert.assertTrue;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +19,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 import mainSrc.mainCodes;
+import mainSrc.mainCodes.jsonFile.JsonException;
 
 
 
@@ -28,6 +33,7 @@ public class testFunctionalities {
 	mainCodes mc = new mainCodes();
 	mainCodes.logger logCat = mc.new logger();    // declaring an inner class 
 	mainCodes.jsonFile jsonLog = mc.new jsonFile();
+	mainCodes.IOfile ioFile = mc.new IOfile();
 	
 	
 	String findMatch = null;
@@ -35,23 +41,72 @@ public class testFunctionalities {
 	String pathname = null;
 	String description = null;
 	String code = null;
+	
+	public static WebDriver driver = null;
 
 	//public static WebDriver driver = null;
 	String username = System.getProperty("user.name");
 	
-	@Test (enabled = true, priority = 1, description="initite Chrome driver", groups="all, driver")
+/*	
+	@BeforeTest
+	public void gotoYahooUsingChrome() {
+		String browsertype = "chrome";
+		
+		switch(browsertype.toLowerCase().trim()) {
+		case "chrome": 
+			System.setProperty("webdriver.chrome.driver", "\\webdriver\\chromedriver.exe");
+			driver = new ChromeDriver();
+			break;
+		case "internetexplorer":
+		case "ie":
+			driver = new InternetExplorerDriver();
+			System.setProperty("webdriver.ie.driver", "\\webdriver\\IEDriverServer.exe");
+			break;
+//		case "firefox":
+//		case "ff":
+//			FirefoxDriver driver = new FirefoxDriver();
+//			break;
+		default:
+			logCat.warning("connect2webdriver", "Browser '" + browsertype + "' is currently not supported" );
+		}
+
+		driver.get("https://www.google.com/");
+	}
+*/
+	
+	@Test(enabled= true, priority = 1, description = "read MS excel spreadsheet", groups="all, excell")
+	public void readMSExcell() {
+		String file = "/TestCases/1_Login_AD.xlsx";
+		String sheetName = "";
+		try {
+			ioFile.readSpreadSheet(file, sheetName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Test(enabled = false, priority = 1, description="initializing IE webdriver")
+	public void openIEwebpage() {
+		WebDriver driver = new InternetExplorerDriver();
+		System.setProperty("webdriver.ie.driver", "\\webdriver\\IEDriverServer.exe");
+		driver.get("https://www.yahoo.com/");
+	}
+	
+	@Test (enabled = false, priority = 1, description = "Initializing firefox" )
+	public void openFireDrier() {
+		FirefoxDriver driver = new FirefoxDriver();
+		driver.get("https://www.yahoo.com/");
+	}
+	
+	
+	@Test (enabled = false, priority = 1, description="initite Chrome driver", groups="all, driver")
 	public void openChromeDriver() {		
 
-		
-		System.out.println("Chrome");
-		System.setProperty("webdriver.chrome.driver", "C:\\webdriver\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "\\webdriver\\chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
 		driver.get("https://www.yahoo.com/");
-	
-		//System.setProperty("webdriver.chrome.driver", "/webdriver/chromedriver.exe");
-		//WebDriver driver = new ChromeDriver();
-		
-		//driver.get("https://www.google.com/");
 	}
 	
 	
@@ -115,12 +170,37 @@ public class testFunctionalities {
 	public void noMatchFound4Key() throws FileNotFoundException, IOException, ParseException {
 		Object jo = new JSONParser().parse(new FileReader("src/config/TC_jsonArrayFile.json"));
 		
-		Object result = jsonLog.getJsonArray(jo, "Dummy", "Golf");
-		assertEquals(result.toString(), "");	
+		Object result;
+		try {
+			result = jsonLog.getJsonArray(jo, "Dummy", "Golf");
+			assertEquals(result.toString(), "");
+		} catch (JsonException e) {
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			logCat.warning("getJsonObject", sw.toString());
+		}
+			
 	}
 	
-	@Test(enabled = false, priority = 1, description = "No matching Value is found in a Json array", groups = {"all", "json"})
-	public void noMatchFoundinJSONArray() throws FileNotFoundException, IOException, ParseException {
+	@Test(enabled = false, priority = 1, description = "Dispaly JsonException message", groups = {"all", "json"})
+	public void displayExceptionMessageForJsonArray() throws FileNotFoundException, IOException, ParseException {
+		Object jo = new JSONParser().parse(new FileReader("src/config/TC_jsonArrayFile.json"));
+		
+		Object result;
+		try {
+			result = jsonLog.getJsonArray(jo, "A1", "dummy");
+			System.out.println(result);
+			assertEquals(result.toString(), "");	
+		} catch (JsonException e) {
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			logCat.warning("getJsonObject", sw.toString());
+		}
+		
+	}
+	
+	@Test(enabled = false, priority = 1, description = "No matching Value is found in a Json array", groups = {"all", "json"}, expectedExceptions = JsonException.class)
+	public void noMatchFoundinJSONArray() throws FileNotFoundException, IOException, ParseException, JsonException {
 		Object jo = new JSONParser().parse(new FileReader("src/config/TC_jsonArrayFile.json"));
 		
 		Object result = jsonLog.getJsonArray(jo, "A1", "dummy");
@@ -132,12 +212,20 @@ public class testFunctionalities {
 	public void getJsonArrayAndReturnaValue() throws FileNotFoundException, IOException, ParseException {
 		Object jo = new JSONParser().parse(new FileReader("src/config/TC_jsonArrayFile.json"));
 		
-		Object result = jsonLog.getJsonArray(jo, "A1", "Golf");
-		assertEquals(result.toString(), "{\"A1\":\"Golf\",\"A2\":\"India\",\"A3\":\"Juliet\"}");	
+		Object result;
+		try {
+			result = jsonLog.getJsonArray(jo, "A1", "Golf");
+			assertEquals(result.toString(), "{\"A1\":\"Golf\",\"A2\":\"India\",\"A3\":\"Juliet\"}");
+		} catch (JsonException e) {
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			logCat.warning("getJsonObject", sw.toString());
+		}
+			
 	}
 	
 	
-	@Test(enabled = false, priority = 0, description="figure out how toget a value from a JSON array", groups= {"all" , "json"})
+	@Test(enabled = false, priority = 0, description="figure out how to get a value from a JSON array", groups= {"all" , "json"})
 	public void getJsonArray() throws FileNotFoundException, IOException, ParseException {
 		
 		Object jo = new JSONParser().parse(new FileReader("src/config/TC_jsonArrayFile.json"));
@@ -171,19 +259,40 @@ public class testFunctionalities {
 
 	}
 	
+	@Test(enabled = false, priority = 0, description = "find a match for Facebook from the json object", groups = {"all", "json"})
+	public void displayExceptionErrorForJsonObject() throws FileNotFoundException, IOException, ParseException {
+		Object obj = new JSONParser().parse(new FileReader("src/config/TC_navigation.json"));
+		String name = "sdfsd";
+		
+		try {
+			assertEquals(jsonLog.getJsonObject(obj, name), "Facebook");
+		} catch (JsonException e) {
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			logCat.warning("getJsonObject", sw.toString());
+		}
+	}
+	
 	
 	@Test(enabled = false, priority = 0, description = "find a match for Facebook from the json object", groups = {"all", "json"})
 	public void getJsonObject() throws FileNotFoundException, IOException, ParseException {
 		Object obj = new JSONParser().parse(new FileReader("src/config/TC_navigation.json"));
 		String name = "facebook";
 		
-		assertEquals(jsonLog.getJsonObject(obj, name), "Facebook");
+		try {
+			assertEquals(jsonLog.getJsonObject(obj, name), "Facebook");
+		} catch (JsonException e) {
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			logCat.warning("getJsonObject", sw.toString());
+		}
 	}
 	
-	@Test(enabled = false, priority = 1, description = "return blank when no match is found", groups = {"all", "json"})
-	public void findNoMatchFromJsonObject() throws FileNotFoundException, IOException, ParseException {
+	@Test(enabled = false, priority = 1, description = "return blank when no match is found", groups = {"all", "json"}, expectedExceptions = {FileNotFoundException.class, JsonException.class, ParseException.class, IOException.class})
+	public void findNoMatchFromJsonObject() throws FileNotFoundException, IOException, ParseException, JsonException {
 			Object obj =new JSONParser().parse(new FileReader("src/config/TC_navigation.json"));
-			assertEquals(jsonLog.getJsonObject(obj, "dummy"), "");
+			@SuppressWarnings("unused")
+			Object result = jsonLog.getJsonObject(obj, "roadrunner");
 	}
 	
 	

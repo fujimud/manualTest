@@ -6,15 +6,19 @@ import static org.testng.Assert.assertEquals;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import mainSrc.mainCodes;
+import mainSrc.mainCodes.jsonFile.JsonException;
 
 
 public class factoryTests {
@@ -70,30 +74,60 @@ public class factoryTests {
 		return arrayJson;		
 	}
 		
-	@Test(enabled = true, priority= 1, dataProvider = "validJsonFile", description="valid information being passed from json file")
-	public void getValidDataFromJsonFile(String[] testData) {
 
-
-			System.out.println("DESC: >> " + testData[2]);			// display the description
+	
+	@Test(enabled = false, priority= 1, dataProvider = "validJsonFile", description="valid information being passed from json file")
+	//public void getValidDataFromJsonFile(String[] testData) {
+	public void getValidDataFromJsonFile(String findMatch, String status, String description, String fileLocation, String jsonUrl, String expectedResult) { 
+	
 			try {
-				assertEquals(jf.getDataFromJsonFile(testData[4], testData[3], testData[0]), testData[5]);
-				System.out.println("Pause");
-			} catch (IOException | ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				assertEquals( jf.getDataFromJsonFile(jsonUrl, fileLocation, findMatch), expectedResult);
+			} catch (JsonException e) {
+				StringWriter sw = new StringWriter();
+				e.printStackTrace(new PrintWriter(sw));
+				logCat.warning("getJsonObject", sw.toString());	
+			} catch (IOException | ParseException e1) {
+				StringWriter sw = new StringWriter();
+				e1.printStackTrace(new PrintWriter(sw));
+				logCat.warning("getJsonObject", sw.toString());
+			} 
 	}
 	
 	
-	@Test (enabled = false, priority= 2, dataProvider = "invalidJsonFile", description="throw exception errors for invalid parameters sent from a json file", expectedExceptions = {ParseException.class, IOException.class})
-	public void getDataFromJsonFile(String[] testData) throws FileNotFoundException, IOException, ParseException {		
+	@Test (enabled = false, priority= 2, dataProvider = "invalidJsonFile", description="throw FileNotFoundException exception errors for invalid parameters sent from a json file", expectedExceptions = {FileNotFoundException.class, JsonException.class})	
+	public void getDataFromJsonFile(String findMatch, String status, String description, String jsonPath, String fileLocation, String expectedResult)  throws FileNotFoundException, JsonException{	
+
+		System.out.println(jf.returnDataFromJsonFile(fileLocation, jsonPath, findMatch));
 		
-		System.out.println("DESC: >> " + testData[2]);		// display the description
-		System.out.println(jf.getDataFromJsonFile(testData[4], testData[3], testData[0]));		
-		
-		
-	} 
+
+	}
 	
+	@Test(enabled = false, priority = 3, dataProvider = "invalidJsonFile", description="throws JsonException errors" )
+	public void triggerJsonExceptionError(String findMatch, String status, String description, String fileLocation, String jsonUrl, String expectedResult) {
+		//System.out.println("findMatch > " +url);
+		//System.out.println("code > " + data1);
+		//System.out.println("description: " +data2);
+		//System.out.println("jsonPath: " + data3);
+		//System.out.println("jsonUrl: " + data4);
+		//System.out.println("expectedResult: " + data5);
+		
+		
+		try {
+			Assert.assertEquals( jf.returnDataFromJsonFile( fileLocation, jsonUrl, findMatch), expectedResult);
+			//System.out.println(jf.returnDataFromJsonFile(fileLocation, jsonUrl, findMatch));
+		} catch (IOException | ParseException | JsonException e) {
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			logCat.warning("getJsonObject", sw.toString());
+		}
+
+		
+		
+		
+		
+	}
 }
+
+
 	
 
