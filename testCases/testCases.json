@@ -1,0 +1,8 @@
+{"get2ProductDetailpage": [{"Cell Phones | 4G Phones | iPhone and Android Phones | T-Mobile": {"click_button":"shop"}},
+{"Smartphones & Cell Phones | Compare our Best Cell Phones & Smartphones":{"click_image":"iphone8"}},
+{"phone":{"select_memory":"128GB", "select_payment":"Pay in Full", "click_button":"Add to cart"}}],
+"go2Login":[{"get2ProductDetailpage":{"click_navbar":"My T-MOBILE"}},
+{"My T-Mobile Online | Access Messages, Minutes & Bills | T-Mobile":{"input_email":"fujimud", "input_password":"test", "click_button":"log in"}}
+]}
+
+
