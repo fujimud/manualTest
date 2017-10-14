@@ -17,14 +17,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -44,7 +49,7 @@ public class mainCodes {
 	public final String PATHJSONRECORDS = CONFIGPATH + "urlRecords.json";
 	public final String LOGLOCATION = CONFIGPATH + "logs/";
 	public final String MAP = CONFIGPATH + "NavigationMap.json";
-	
+
 	public final Boolean DISPLAYLOGS2CONSOLE = false;
 
 	logger log = new logger();
@@ -56,7 +61,7 @@ public class mainCodes {
 	///////////////////////////////////////////////////////////////////////////////////
 	public void router(String distination) {
 		// Purpose: navigation flow
-				
+
 		try {
 			Object fileName = new JSONParser().parse(new FileReader(MAP));
 			Object getDirections = jFile.getJsonObject(fileName, distination.toLowerCase());
@@ -80,14 +85,12 @@ public class mainCodes {
 					System.out.println("Not good");
 				}
 			}
-		} catch (JsonException|IOException | ParseException e) {
+		} catch (JsonException | IOException | ParseException e) {
 			e.printStackTrace();
-			log.error("router", message);	
+			log.error("router", message);
 		}
 
 	}
-
-
 
 	//// Selenium //////////////////////////////////////////////////////////////////
 
@@ -232,7 +235,6 @@ public class mainCodes {
 				throw new JsonException(message);
 			}
 		}
-
 
 		///////////////////////////////////////////////////////////////////////
 		// my exception class
@@ -392,133 +394,187 @@ public class mainCodes {
 	public class IOfile {
 
 		//// MS Excel //////////////////////////////////////////////
-		public void readFromTC_SpreadSheet(String fileLocation) throws IOException  {
-			FileInputStream inputStream= new FileInputStream(new File(fileLocation));
+		public void readFromTC_SpreadSheet(String fileLocation) throws IOException {
+			FileInputStream inputStream = new FileInputStream(new File(fileLocation));
 			XSSFWorkbook wb = new XSSFWorkbook(inputStream);
-			//HashMap testCase = new HashMap();
-			//Hashtable testSuite = new Hasttable();
+			HashMap<String, String> tcMap = new HashMap<String, String>();
+			TreeMap<String, String> testSuite_Map = new TreeMap<>(tcMap);
+			JSONObject jsonObj = new JSONObject();
 			
-			//System.out.println(wb.getSheetName(1));
 			
-			Collection<String> listOfLabels = new ArrayList<String>();
-			listOfLabels.add("Login");
-			listOfLabels.add("Description");
+			// System.out.println(wb.getSheetName(1));
+
+			ArrayList<String> listOfLabels = new ArrayList<String>();
+			listOfLabels.add("Test case name");
+			listOfLabels.add("Test case description");
+			listOfLabels.add("Created By");
 			listOfLabels.add("Summary");
-			listOfLabels.add("Business requirements");
+			listOfLabels.add("Test priority");
+			listOfLabels.add("Business requirement");
 			listOfLabels.add("Precondition");
-			listOfLabels.add("Date");
+			listOfLabels.add("Created date");
 			listOfLabels.add("Originatpr");
-			listOfLabels.add("Step");
-			listOfLabels.add("Expected result");
-			listOfLabels.add("Actual result");
-			listOfLabels.add("Note");
 			listOfLabels.add("Automation");
-			
-			
+			listOfLabels.add("overall result");
+
+			ArrayList<String> labels_for_test_steps = new ArrayList<String>();
+			labels_for_test_steps.add("Step");
+			labels_for_test_steps.add("Expected result");
+			labels_for_test_steps.add("Actual result");
+			labels_for_test_steps.add("Status");
+			labels_for_test_steps.add("Test step");
+			labels_for_test_steps.add("test result (pass. fail, blocked)");
+			labels_for_test_steps.add("Note");
+
+			ArrayList<String> exclude_The_Following_SheetNames = new ArrayList<String>();
+			exclude_The_Following_SheetNames.add("template");
+			exclude_The_Following_SheetNames.add("parameters");
+			//exclude_The_Following_SheetNames.add("testcasescenario");
+			exclude_The_Following_SheetNames.add("presentation");
+
 			for (int i = 0; i < wb.getNumberOfSheets(); i++) {
-				
-				String sheetName = wb.getSheetName(i);
+
+				String sheetName = wb.getSheetName(i).trim();
 				XSSFSheet sheet = wb.getSheetAt(i);
 				int number_of_rows_with_blank = 0;
-				
-				//Iterator<Row> rows = sheet.iterator();
-				if (sheetName.toLowerCase().trim().equals("template")) break;
-				System.out.println("////////////////////////////");
-				System.out.println(sheetName);
-				
-				Iterator<Row> rows = sheet.iterator();
-				while(rows.hasNext()) {
-					if (number_of_rows_with_blank >= 20) {
-						System.out.println("to many blanks");
-						break;
-					} else {
-						number_of_rows_with_blank++;
-						
-					}
-					
-					Row row = rows.next();
-					Iterator<Cell> cells = row.cellIterator();
-					while (cells.hasNext()) {
-						String key = "";
-						String value = "";
-						Cell cell = cells.next();
-						Boolean matching_label_was_found = false;
-						
-						switch (cell.getCellType()) {
-						
-						case Cell.CELL_TYPE_STRING:
-							
-							String cellValue = cell.getStringCellValue().toLowerCase();
-							Iterator<String> labels = listOfLabels.iterator();
-							//System.out.println(cellValue + "\t");
-							
-							
-							//for (String labels : listOfLabels)
-							while(labels.hasNext()) {
-								//System.out.println("Label > " + labels);
-								//if (cellValue.contains(labels.next().toLowerCase())) {
-								if (cellValue.startsWith(labels.next().toLowerCase())) {
-									matching_label_was_found = true;
-									break;
-								}
-							}
-							
-							if (matching_label_was_found == false) {
-								value = cellValue;
-								System.out.println("Value > " + value);
-							} else {
-								key = cellValue;
-								System.out.println("Key > " + key);
-							}
-							
-							break;
-						case Cell.CELL_TYPE_NUMERIC:
-							System.out.println(cell.getNumericCellValue() + "\t");
-							//value = cell.getNumericCellValue();			// value needs to be a double
-							break;
-						case Cell.CELL_TYPE_BLANK:
-							//System.out.println("BLANK " + number_of_rows_with_blank);
-							
-							break;
-						case Cell.CELL_TYPE_FORMULA:
-							System.out.println(cell.getCellFormula() + "\t");
-							break;
-						case Cell.CELL_TYPE_BOOLEAN:
-							System.out.println(cell.getBooleanCellValue() + "\t");
-							break;
-						case Cell.CELL_TYPE_ERROR:
-							System.out.println(cell.getErrorCellValue() + "\t");
-							break;
-						}
-					}
-					
+				Boolean skip_Writing_This_SpreadSheet = false;
+
+				// Exclude the following sheet names
+				Iterator<String> skip_SheetNames = exclude_The_Following_SheetNames.iterator();
+				while (skip_SheetNames.hasNext()) {
+					if (sheetName.toLowerCase().trim().equals(skip_SheetNames.next().toString()))
+						skip_Writing_This_SpreadSheet = true;
 				}
 				
 				
-			}
-			
-			//int number_of_sheets = wb.getNumberOfSheets();
-			
-			//System.out.println(wb.getSheetName(1));
-/*			ArrayList<String> listOfLabels = new ArrayList<String>();
-			listOfLabels.add("login");
-			listOfLabels.add("desc");
-			listOfLabels.add("summary");
-			listOfLabels.add("business");
-			listOfLabels.add("precondition");
-			listOfLabels.add("date");
-			listOfLabels.add("origin");
-			listOfLabels.add("step");
-			listOfLabels.add("expected result");
-			listOfLabels.add("actual result");
-			listOfLabels.add("note");
-*/			
-			
-			
-		}
-		
-		
-		
+				if (skip_Writing_This_SpreadSheet == false) {
+					// skip_Writing_This_SpreadSheet = false;
+
+					System.out.println("////////////////////////////");
+					System.out.println(sheetName);
+
+					testSuite_Map.put(sheetName, "");
+					Iterator<Row> rows = sheet.iterator();
+					while (rows.hasNext()) {
+						if (number_of_rows_with_blank >= 20) {
+							System.out.println("to many blanks");
+							break;
+						} else {
+							number_of_rows_with_blank++;
+
+						}
+
+						Row row = rows.next();
+						Iterator<Cell> cells = row.cellIterator();
+						String key = "";
+						String value = "";
+						while (cells.hasNext()) {
+							Cell cell = cells.next();
+							Boolean this_Is_A_TestCase_Step = false;
+							
+							switch (cell.getCellType()) {
+
+							case Cell.CELL_TYPE_STRING:
+
+								// Identify Key and values from the spreadsheet
+								String cellValue = cell.getStringCellValue().trim();
+								String cellValue_AsLowerCase = cellValue.toLowerCase();
+								Iterator<String> labels = listOfLabels.iterator();
+								Iterator<String> tc_steps = labels_for_test_steps.iterator();
+								Boolean tc_label_found_a_match = false;
+
+								// determine if this is the start of the test steps
+								while (tc_steps.hasNext()) {
+									if (cellValue_AsLowerCase.startsWith(tc_steps.next().toLowerCase())) {
+										System.out.println("This is a test steps > " + cellValue);
+										this_Is_A_TestCase_Step = true;
+										HashMap<String, String> stepsMap = new HashMap<String, String>();
+										
+										
+										break;
+									}
+								} // while (tc_steps.hasNext()) {
+
+								// System.out.println(cellValue + "\t");
+								// can a matching label be found from the array
+								while (labels.hasNext()) {
+									String temp_label = labels.next().toLowerCase();
+									int label_size = temp_label.length() + 2;
+
+									// determine if a cellValue contain a valid label
+									if ((cellValue_AsLowerCase.startsWith(temp_label)) && ((label_size) >= cellValue_AsLowerCase.length())) {
+										this_Is_A_TestCase_Step = true;
+										break;
+									}
+									temp_label = "";
+								}
+
+								// set the cell value as a value
+								if (this_Is_A_TestCase_Step == false) {
+									if (tc_label_found_a_match == false) {
+										value = cellValue;
+										System.out.println("Value > " + value);
+										tcMap.put(key, value);
+										tcMap.put("cellPosition", cell.getColumnIndex());
+										
+										//tcMap.put("value", cellValue);
+										//tcMap.put("cellPosition", String.valueOf(cell.getColumnIndex()));
+										//testSuite_Map(key, tcMap);
+										//testSuite_Map(sheetName, tcMap);
+									} // if (tc_label_found_a_match.FALSE) {
+
+								} else {
+									// set the value as a key
+									key = cellValue;
+									System.out.println("Key > " + key);
+									// tcMap.put(key, "");
+
+								}
+
+								break;
+							case Cell.CELL_TYPE_NUMERIC:
+								SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+								value = sdf.format(cell.getDateCellValue());
+								System.out.println("NUMERIC > " + value);
+								tcMap.put(key, value);
+
+								// value = cell.getNumericCellValue(); // value needs to be a double
+								break;
+							case Cell.CELL_TYPE_BLANK:
+								// System.out.println("BLANK " + number_of_rows_with_blank);
+
+								break;
+							case Cell.CELL_TYPE_FORMULA:
+								// System.out.println("FORMULA > " + cell.getCellFormula() + "\t");
+								System.out.println("Formual > " + cell.getNumericCellValue());
+								break;
+							case Cell.CELL_TYPE_BOOLEAN:
+								System.out.println(cell.getBooleanCellValue() + "\t");
+								break;
+							case Cell.CELL_TYPE_ERROR:
+								System.out.println(cell.getErrorCellValue() + "\t");
+								break;
+							} // switch (cell.getCellType())
+						} // while (cells.hasNext())
+						testSuite_Map.putAll(tcMap);
+						jsonObj.put(sheetName, tcMap);
+						
+					} // while (rows.hasNext())
+					System.out.println("\n\n");
+
+					Set<Entry<String, String>> set = testSuite_Map.entrySet();
+					// Set<Entry<String, String>> set = tcMap.entrySet();
+					Iterator<Entry<String, String>> iterator = set.iterator();
+					System.out.println("JSONObject >> " + jsonObj);
+					while (iterator.hasNext()) {
+						Map.Entry mentry = (Map.Entry) iterator.next();
+						System.out.println("key is : " + mentry.getKey() + " & value is : ");
+						System.out.println(mentry.getValue());
+					} // while(iterator.hasNext())
+				} // if (skip_Writing_This_SpreadSheet == true)
+			} // for (int i = 0; i < wb.getNumberOfSheets(); i++)
+		} // public void readFromTC_SpreadSheet(String fileLocation) throws IOException
+
 		@SuppressWarnings("deprecation")
 		public void readSpreadSheet(String fileLocation, String sheetName) throws IOException {
 
@@ -527,8 +583,8 @@ public class mainCodes {
 			XSSFSheet sheet = wb.getSheetAt(0);
 
 			ArrayList<String> listOfLabels = new ArrayList<String>();
-			listOfLabels.add("login");
-			listOfLabels.add("desc");
+			listOfLabels.add("test case name");
+			listOfLabels.add("description");
 			listOfLabels.add("summary");
 			listOfLabels.add("business");
 			listOfLabels.add("precondition");
@@ -538,13 +594,10 @@ public class mainCodes {
 			listOfLabels.add("expected result");
 			listOfLabels.add("actual result");
 			listOfLabels.add("note");
-			
-			
-			
-			
+
 			Iterator<Row> rows = sheet.iterator();
 			int cnt = 1;
-			
+
 			while (rows.hasNext()) {
 				Row row = rows.next();
 
@@ -559,7 +612,7 @@ public class mainCodes {
 						System.out.println(cell.getNumericCellValue() + "\t");
 						break;
 					case Cell.CELL_TYPE_BOOLEAN:
-						System.out.println(cell.getBooleanCellValue() + "\t");						
+						System.out.println(cell.getBooleanCellValue() + "\t");
 						break;
 					case Cell.CELL_TYPE_FORMULA:
 						System.out.println(cell.getCachedFormulaResultType() + "\t");

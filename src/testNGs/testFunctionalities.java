@@ -81,7 +81,8 @@ public class testFunctionalities {
 	
 	@Test(enabled = true, description = "navigate through the spreadsheet")
 	public void readXSSF() {
-		String file = "/TestCases/1_Login_AD.xlsx";
+		//String file = "/TestCases/1_Login_AD.xlsx";
+		String file = "/TestCases/tcTemplate.xlsx";
 		try {
 			ioFile.readFromTC_SpreadSheet(file);
 		} catch (IOException e) {
